@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Multi-Agent Support Architecture</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #ffffff; }
+  svg { display: block; font-family: "Segoe UI", Arial, sans-serif; }
+  .title    { font-size: 40px; font-weight: 700; fill: #0f172a; }
+  .subtitle { font-size: 20px; fill: #475569; }
+  .h        { font-size: 20px; font-weight: 700; fill: #0f172a; }
+  .hw       { font-size: 22px; font-weight: 700; fill: #ffffff; }
+  .m        { font-size: 15px; fill: #64748b; }
+  .mw       { font-size: 15px; fill: #cbd5e1; }
+  .b        { font-size: 15px; fill: #334155; }
+  .small    { font-size: 14px; fill: #334155; }
+  .label    { font-size: 15px; font-weight: 700; fill: #475569; letter-spacing: 0.5px; }
+  .foot     { font-size: 15px; fill: #64748b; }
+  .wire     { stroke: #94a3b8; stroke-width: 2.5; fill: none; }
+</style>
+</head>
+<body>
+<svg width="1200" height="1500" viewBox="0 0 1200 1500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <!-- Header -->
+  <text x="600" y="68" text-anchor="middle" class="title">Multi-Agent Customer Support on AWS</text>
+  <text x="600" y="104" text-anchor="middle" class="subtitle">Amazon Bedrock AgentCore · Strands Agents SDK · Claude on Bedrock</text>
+
+  <!-- Customer -->
+  <rect x="450" y="132" width="300" height="52" rx="26" fill="#0f172a"/>
+  <text x="600" y="165" text-anchor="middle" class="hw" style="font-size:19px">Customer</text>
+  <line x1="560" y1="184" x2="560" y2="244" class="wire" marker-end="url(#arrow)"/>
+  <text x="548" y="220" text-anchor="end" class="m">request</text>
+  <line x1="640" y1="244" x2="640" y2="186" class="wire" marker-end="url(#arrow)"/>
+  <text x="652" y="220" class="m">final reply</text>
+
+  <!-- Runtime container -->
+  <rect x="40" y="248" width="1120" height="910" rx="18" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="68" y="284" class="label">AMAZON BEDROCK AGENTCORE RUNTIME</text>
+  <rect x="770" y="262" width="370" height="36" rx="18" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="955" y="286" text-anchor="middle" class="small" style="fill:#166534;font-weight:600">Bedrock Guardrail on every model call</text>
+
+  <!-- Orchestrator -->
+  <rect x="370" y="316" width="460" height="104" rx="14" fill="#232f3e"/>
+  <text x="600" y="352" text-anchor="middle" class="hw">Orchestrator Agent</text>
+  <text x="600" y="378" text-anchor="middle" class="mw">Claude Haiku 4.5 · temperature 0</text>
+  <text x="600" y="402" text-anchor="middle" class="mw">Routes each request · never writes the reply itself</text>
+
+  <!-- Orchestrator -> workers -->
+  <path d="M600,420 V452" class="wire"/>
+  <path d="M195,452 H1005" class="wire"/>
+  <path d="M195,452 V482" class="wire" marker-end="url(#arrow)"/>
+  <path d="M465,452 V482" class="wire" marker-end="url(#arrow)"/>
+  <path d="M735,452 V482" class="wire" marker-end="url(#arrow)"/>
+  <path d="M1005,452 V482" class="wire" marker-end="url(#arrow)"/>
+
+  <!-- Worker cards -->
+  <g>
+    <rect x="70" y="486" width="250" height="150" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+    <rect x="70" y="486" width="250" height="8" rx="4" fill="#0d9488"/>
+    <text x="90" y="526" class="h">Inventory Agent</text>
+    <text x="90" y="550" class="m">Claude Sonnet 4.5</text>
+    <text x="90" y="582" class="b">Looks up orders and tier</text>
+    <text x="90" y="606" class="b">Reports facts only</text>
+  </g>
+  <g>
+    <rect x="340" y="486" width="250" height="150" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+    <rect x="340" y="486" width="250" height="8" rx="4" fill="#7c3aed"/>
+    <text x="360" y="526" class="h">Policy Agent</text>
+    <text x="360" y="550" class="m">Claude Sonnet 4.5</text>
+    <text x="360" y="582" class="b">Coordinates parallel RAG</text>
+    <text x="360" y="606" class="b">Grounded policy answers</text>
+  </g>
+  <g>
+    <rect x="610" y="486" width="250" height="150" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+    <rect x="610" y="486" width="250" height="8" rx="4" fill="#e11d48"/>
+    <text x="630" y="526" class="h">Refund Agent</text>
+    <text x="630" y="550" class="m">Claude Sonnet 4.5</text>
+    <text x="630" y="582" class="b">Decides return eligibility</text>
+    <text x="630" y="606" class="b">Standard 30 d · Premium 60 d</text>
+  </g>
+  <g>
+    <rect x="880" y="486" width="250" height="150" rx="12" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+    <rect x="880" y="486" width="250" height="8" rx="4" fill="#2563eb"/>
+    <text x="900" y="526" class="h">Communication Agent</text>
+    <text x="900" y="550" class="m">Claude Sonnet 4.5</text>
+    <text x="900" y="582" class="b">Reads all findings</text>
+    <text x="900" y="606" class="b">Writes the final reply</text>
+  </g>
+
+  <!-- Worker detail boxes -->
+  <path d="M195,636 V694" class="wire" marker-end="url(#arrow)"/>
+  <path d="M465,636 V694" class="wire" marker-end="url(#arrow)"/>
+  <path d="M735,636 V694" class="wire" marker-end="url(#arrow)"/>
+  <path d="M1005,636 V694" class="wire" marker-end="url(#arrow)"/>
+
+  <rect x="70" y="698" width="250" height="76" rx="10" fill="#f0fdfa" stroke="#99f6e4"/>
+  <text x="195" y="731" text-anchor="middle" class="h" style="font-size:17px">DynamoDB</text>
+  <text x="195" y="756" text-anchor="middle" class="small">Orders · Customers</text>
+
+  <rect x="340" y="698" width="250" height="76" rx="10" fill="#f5f3ff" stroke="#ddd6fe"/>
+  <text x="465" y="731" text-anchor="middle" class="h" style="font-size:17px">search_all_policies</text>
+  <text x="465" y="756" text-anchor="middle" class="small">ThreadPoolExecutor · 3 at once</text>
+
+  <rect x="610" y="698" width="250" height="76" rx="10" fill="#fff1f2" stroke="#fecdd3"/>
+  <text x="735" y="731" text-anchor="middle" class="h" style="font-size:17px">Rules enforced in code</text>
+  <text x="735" y="756" text-anchor="middle" class="small">Conditional write · no duplicates</text>
+
+  <rect x="880" y="698" width="250" height="76" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+  <text x="1005" y="731" text-anchor="middle" class="h" style="font-size:17px">Only voice to customer</text>
+  <text x="1005" y="756" text-anchor="middle" class="small">Never overrides the decision</text>
+
+  <!-- Parallel RAG band -->
+  <rect x="70" y="812" width="1060" height="208" rx="14" fill="#faf5ff" stroke="#ddd6fe" stroke-width="1.5"/>
+  <text x="94" y="842" class="label" style="fill:#6d28d9">PARALLEL MULTI-AGENT RAG</text>
+  <text x="1106" y="842" text-anchor="end" class="small" style="fill:#6d28d9">Bedrock Knowledge Bases · S3 Vectors · Titan Text Embeddings v2</text>
+
+  <path d="M465,774 V858" class="wire"/>
+  <path d="M260,858 H940" class="wire"/>
+  <path d="M260,858 V872" class="wire" marker-end="url(#arrow)"/>
+  <path d="M600,858 V872" class="wire" marker-end="url(#arrow)"/>
+  <path d="M940,858 V872" class="wire" marker-end="url(#arrow)"/>
+
+  <g>
+    <rect x="110" y="876" width="300" height="56" rx="10" fill="#ffffff" stroke="#c4b5fd"/>
+    <text x="260" y="901" text-anchor="middle" class="h" style="font-size:16px">Returns retriever</text>
+    <text x="260" y="922" text-anchor="middle" class="m" style="font-size:13px">sub-agent · temperature 0</text>
+    <path d="M260,932 V954" class="wire" marker-end="url(#arrow)"/>
+    <rect x="110" y="958" width="300" height="46" rx="23" fill="#ede9fe"/>
+    <text x="260" y="987" text-anchor="middle" class="small" style="font-weight:600">Returns KB</text>
+  </g>
+  <g>
+    <rect x="450" y="876" width="300" height="56" rx="10" fill="#ffffff" stroke="#c4b5fd"/>
+    <text x="600" y="901" text-anchor="middle" class="h" style="font-size:16px">Shipping retriever</text>
+    <text x="600" y="922" text-anchor="middle" class="m" style="font-size:13px">sub-agent · temperature 0</text>
+    <path d="M600,932 V954" class="wire" marker-end="url(#arrow)"/>
+    <rect x="450" y="958" width="300" height="46" rx="23" fill="#ede9fe"/>
+    <text x="600" y="987" text-anchor="middle" class="small" style="font-weight:600">Shipping KB</text>
+  </g>
+  <g>
+    <rect x="790" y="876" width="300" height="56" rx="10" fill="#ffffff" stroke="#c4b5fd"/>
+    <text x="940" y="901" text-anchor="middle" class="h" style="font-size:16px">Warranty retriever</text>
+    <text x="940" y="922" text-anchor="middle" class="m" style="font-size:13px">sub-agent · temperature 0</text>
+    <path d="M940,932 V954" class="wire" marker-end="url(#arrow)"/>
+    <rect x="790" y="958" width="300" height="46" rx="23" fill="#ede9fe"/>
+    <text x="940" y="987" text-anchor="middle" class="small" style="font-weight:600">Warranty KB</text>
+  </g>
+
+  <!-- Shared state -->
+  <rect x="70" y="1048" width="1060" height="84" rx="14" fill="#fff7ed" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="600" y="1083" text-anchor="middle" class="h" style="font-size:19px">Shared WorkflowState · DynamoDB · optimistic locking</text>
+  <text x="600" y="1110" text-anchor="middle" class="b">Agents never call each other: every finding is saved here with a version-checked write</text>
+
+  <!-- Platform services -->
+  <rect x="40" y="1190" width="356" height="104" rx="14" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="218" y="1232" text-anchor="middle" class="h" style="font-size:18px">AgentCore Memory</text>
+  <text x="218" y="1260" text-anchor="middle" class="b">Session summaries · 7-day retention</text>
+
+  <rect x="422" y="1190" width="356" height="104" rx="14" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="600" y="1232" text-anchor="middle" class="h" style="font-size:18px">AWS X-Ray</text>
+  <text x="600" y="1260" text-anchor="middle" class="b">End-to-end trace of every request</text>
+
+  <rect x="804" y="1190" width="356" height="104" rx="14" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="982" y="1232" text-anchor="middle" class="h" style="font-size:18px">Amazon CloudWatch</text>
+  <text x="982" y="1260" text-anchor="middle" class="b">Tool calls, timings and logs</text>
+
+  <!-- Footer -->
+  <line x1="40" y1="1346" x2="1160" y2="1346" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="600" y="1386" text-anchor="middle" class="foot">Routing by model, critical rules in code · Python · Strands Agents SDK · Amazon Bedrock</text>
+  <text x="600" y="1414" text-anchor="middle" class="foot">AgentCore Runtime · Bedrock Guardrails · DynamoDB · S3 Vectors · X-Ray · CloudWatch</text>
+</svg>
+</body>
+</html>
