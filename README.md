@@ -4,7 +4,7 @@ A customer support system in which five AI agents work together to answer order,
 
 Final project of the **Udacity Future AWS Agent Engineer Nanodegree**. The project passed review, scoring 120/120 on the automated test suite.
 
-![Architecture](docs/architecture.png)
+![Architecture](screenshots/architecture.png)
 
 ## What it does
 
